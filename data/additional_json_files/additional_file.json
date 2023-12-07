@@ -1,0 +1,101 @@
+{
+    "transactions": [
+        {
+            "customerId": "fbbe0690-0cd1-48eb-aece-f2744db6f895",
+            "customerName": "Gregory Downs",
+            "transactionId": "abc123",
+            "transactionDate": "2023-02-21",
+            "sourceDate": "2023-02-22T21:20:48",
+            "merchantId": 36,
+            "categoryId": 10,
+            "currency": "GBP",
+            "amount": "-123",
+            "description": "ABC | Travel"
+        },
+        {
+            "customerId": "fbbe0690-0cd1-48eb-aece-f2744db6f895",
+            "customerName": "Gregory Downs",
+            "transactionId": "abc124",
+            "transactionDate": "2022-04-03",
+            "sourceDate": "2022-04-03T19:00:23",
+            "merchantId": 64,
+            "categoryId": 3,
+            "currency": "GBP",
+            "amount": "123",
+            "description": "Sherman-Love | Shopping"
+        },
+        {
+            "customerId": "fbbe0690-0cd1-48eb-aece-f2744db6f895",
+            "customerName": "Gregory Downs",
+            "transactionId": "abc125",
+            "transactionDate": "2023-11-11",
+            "sourceDate": "2023-11-13T04:00:20",
+            "merchantId": 61,
+            "categoryId": 4,
+            "currency": "GBP",
+            "amount": "-123",
+            "description": "Anderson, Thomas and Jimenez | Eating Out"
+        },
+        {
+            "customerId": "fbbe0690-0cd1-48eb-aece-f2744db6f895",
+            "customerName": "Gregory Downs",
+            "transactionId": "abc145",
+            "transactionDate": "2019-09-12",
+            "sourceDate": "2019-09-17T14:47:20",
+            "merchantId": 86,
+            "categoryId": 8,
+            "currency": "GBP",
+            "amount": "-123",
+            "description": "Smith, Owens and Lewis | Finances"
+        },
+        {
+            "customerId": "fbbe0690-0cd1-48eb-aece-f2744db6f895",
+            "customerName": "Gregory Downs",
+            "transactionId": "abc129",
+            "transactionDate": "2021-08-02",
+            "sourceDate": "2021-08-07T02:00:12",
+            "merchantId": 64,
+            "categoryId": 3,
+            "currency": "GBP",
+            "amount": "123",
+            "description": "Sherman-Love | Shopping"
+        },
+        {
+            "customerId": "fbbe0690-0cd1-48eb-aece-f2744db6f895",
+            "customerName": "Gregory Downs",
+            "transactionId": "abc383",
+            "transactionDate": "2020-08-16",
+            "sourceDate": "2020-08-19T20:00:33",
+            "merchantId": 28,
+            "categoryId": 9,
+            "currency": "GBP",
+            "amount": "-123",
+            "description": "Casey Inc | Health & Beauty"
+        },
+        {
+            "customerId": "fbbe0690-0cd1-48eb-aece-f2744db6f895",
+            "customerName": "Gregory Downs",
+            "transactionId": "abc1234",
+            "transactionDate": "2021-06-15",
+            "sourceDate": "2021-06-22T15:56:08",
+            "merchantId": 7,
+            "categoryId": 11,
+            "currency": "GBP",
+            "amount": "9.25",
+            "description": "Henderson and Sons | General"
+        },
+        {
+            "customerId": "fbbe0690-0cd1-48eb-aece-f2744db6f895",
+            "customerName": "Gregory Downs",
+            "transactionId": "abc789",
+            "transactionDate": "2020-01-03",
+            "sourceDate": "2020-01-12T05:09:04",
+            "merchantId": 13,
+            "categoryId": 9,
+            "currency": "GBP",
+            "amount": "1406.95",
+            "description": "Palmer-Ward | Health & Beauty"
+        }
+
+    ]
+}
