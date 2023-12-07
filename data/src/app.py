@@ -21,17 +21,21 @@ def main():
 
     for file_name in file_names:
         # Extract from json
-        # df = read_json_to_df('tech_assessment_transactions.json')
         source_path = os.path.join(source_folder, file_name)
         df = read_json_to_df(source_path)
 
         # Transformation
-        df = convert_dates(df)
-        df = currency_filter(df)
-        df = remove_duplicate_txnID(df)
+        df, invalid_data_df = convert_dates(df)
+        df, invalid_currency_df = currency_filter(df)
+        df, duplicate_data_df = remove_duplicate_txnID(df)
         df = split_description(df)
         df = final_df(df)
 
+        # Load errors to error_logs table 
+        upsert_df_to_postgres(invalid_data_df, 'error_logs')
+        upsert_df_to_postgres(invalid_currency_df, 'error_logs')
+        upsert_df_to_postgres(duplicate_data_df, 'error_logs')
+        
         # Load data to customers and transactions data mart
         df_customers = latest_customers_txn(df)
         upsert_df_to_postgres(df_customers, "customers")
@@ -40,8 +44,8 @@ def main():
         upsert_df_to_postgres(df_transactions, "transactions")
 
         # Move file to successful folder after read the json file
-        destination_path = os.path.join(destination_folder, file_name)
-        shutil.move(source_path, destination_path)
+        # destination_path = os.path.join(destination_folder, file_name)
+        # shutil.move(source_path, destination_path)
 
 
 if __name__ == "__main__":

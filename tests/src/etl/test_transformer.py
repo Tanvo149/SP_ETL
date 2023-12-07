@@ -32,13 +32,15 @@ def duplicate_data():
 
 
 def test_remove_invalid_txnDate(sample_data):
-    result_df = convert_dates(sample_data)
+    result_df, invalid_date_df = convert_dates(sample_data)
 
     assert len(result_df) == len(sample_data) - 1  # Delete invalid_date record
+    assert len(invalid_date_df) == 1 # Expect 1 record
 
 
 def test_sourceData_formatting(sample_data):
-    result_df = convert_dates(sample_data).reset_index(drop=True)
+    result_df, invalid_date_df = convert_dates(sample_data)
+    result_df = result_df.reset_index(drop=True)
 
     expected_data = {"sourceDate": ["2022-01-22 22:22:22", "2022-02-10 12:30:00", "2022-04-10 08:45:00"]}
     expected_df = pd.DataFrame(expected_data)
@@ -48,13 +50,15 @@ def test_sourceData_formatting(sample_data):
 
 
 def test_currency_filter(sample_data):
-    result_df = currency_filter(sample_data)
+    result_df, invalid_currency_df = currency_filter(sample_data)
 
     assert len(result_df) == 3  # Valid currencies
+    assert len(invalid_currency_df) == 1 # Invalid currency 
 
 
 def test_remove_duplicate_txnID(duplicate_data):
-    result_df = remove_duplicate_txnID(duplicate_data).reset_index(drop=True)
+    result_df, duplicate_df = remove_duplicate_txnID(duplicate_data)
+    result_df = result_df.reset_index(drop=True)
 
     expected_data = {
         "transactionId": ["AB"],

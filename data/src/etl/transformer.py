@@ -1,5 +1,4 @@
 import pandas as pd
-from .loader import upsert_df_to_postgres
 
 pd.options.mode.copy_on_write = True
 
@@ -19,7 +18,6 @@ def convert_dates(df):
     if len(invalid_date_df) > 0:
         invalid_date_df["reason"] = "invalid transaction date format"
         invalid_date_df = invalid_date_df.drop(["customerName", "description", "txn_date_1"], axis=1)
-        upsert_df_to_postgres(invalid_date_df, "error_logs")
 
     # Exclude rows with invalid date from the main dataframe
     df = df.dropna(subset=["txn_date_1"])
@@ -32,7 +30,7 @@ def convert_dates(df):
     df["sourceDate"] = pd.to_datetime(df["sourceDate"])
     df.loc[:, "sourceDate"] = df["sourceDate"].dt.strftime("%Y-%m-%d %H:%M:%S")
 
-    return df
+    return df, invalid_date_df
 
 
 def currency_filter(df):
@@ -46,9 +44,8 @@ def currency_filter(df):
     if len(non_valid_list_df) > 0:
         non_valid_list_df["reason"] = "invalid currency"
         non_valid_list_df = non_valid_list_df.drop(["customerName", "description"], axis=1)
-        upsert_df_to_postgres(non_valid_list_df, "error_logs")
 
-    return df[df["currency"].isin(valid_list)]
+    return df[df["currency"].isin(valid_list)], non_valid_list_df
 
 
 def remove_duplicate_txnID(df):
@@ -65,13 +62,12 @@ def remove_duplicate_txnID(df):
         duplicate_df = df[duplicate_df]
         duplicate_df["reason"] = "duplicate transactionId records"
         duplicate_df = duplicate_df.drop(["customerName", "description"], axis=1)
-        upsert_df_to_postgres(duplicate_df, "error_logs")
 
     # Remove duplicate txnIds and keep the first record
     df = df.drop_duplicates(subset="transactionId", keep="first")
     print("{} duplicate records have been removed".format(len(duplicate_df)))
 
-    return df
+    return df, duplicate_df
 
 
 def add_additional_dates(df):
@@ -104,8 +100,6 @@ def split_description(df):
     df["description_boolean"] = df["description"].str.contains("|", regex=False)
     split_columns = df["description"].str.split(r"\|", n=1, expand=True)
     split_columns = split_columns.rename(columns={0: "merchant", 1: "category"})
-
-    split_columns.to_csv('split.csv')
 
     df = pd.concat([df, split_columns], axis=1)
 
