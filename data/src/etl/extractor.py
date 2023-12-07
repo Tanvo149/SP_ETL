@@ -1,6 +1,5 @@
 import pandas as pd
 import json
-import sys
 
 
 def read_json_to_df(file_path):

@@ -37,7 +37,7 @@ def main():
         upsert_df_to_postgres(df_customers, "customers")
 
         df_transactions = add_additional_dates(df)
-        upsert_df_to_postgres(df_transactions, 'transactions')
+        upsert_df_to_postgres(df_transactions, "transactions")
 
         # Move file to successful folder after read the json file
         destination_path = os.path.join(destination_folder, file_name)

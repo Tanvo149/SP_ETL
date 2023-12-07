@@ -1,7 +1,6 @@
 from sqlalchemy import create_engine
 import psycopg2
 import configparser
-import pandas as pd
 
 config = configparser.ConfigParser()
 config.read("config.ini")

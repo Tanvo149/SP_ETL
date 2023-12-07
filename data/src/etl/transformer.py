@@ -1,5 +1,4 @@
 import pandas as pd
-import sys
 from .loader import upsert_df_to_postgres
 
 pd.options.mode.copy_on_write = True
@@ -102,17 +101,32 @@ def split_description(df):
     Set free text to "Custom" as it may contain PPI
     """
 
-    df["description_boolean"] = df["description"].str.contains("\|")
-    split_columns = df["description"].str.split("\|", n=1, expand=True)
+    df["description_boolean"] = df["description"].str.contains("|", regex=False)
+    split_columns = df["description"].str.split(r"\|", n=1, expand=True)
     split_columns = split_columns.rename(columns={0: "merchant", 1: "category"})
+
+    split_columns.to_csv('split.csv')
 
     df = pd.concat([df, split_columns], axis=1)
 
     df.loc[~df["description_boolean"], "merchant"] = "Custom Merchant"
     df.loc[~df["description_boolean"], "category"] = "Custom Category"
 
+    df['merchant'] = df['merchant'].apply(check_phone_number)
+
     return df
 
+def check_phone_number(value):
+    """
+    Description could have 075**** | Shopping 
+    However, this could would need to be refine to identify phone number, 
+    account number/sort code, email address. 
+    WORK IN PROGRESS
+    """
+    if str(value).startswith('07'):
+        return "Custom Merchant"
+    else:
+        return value
 
 def latest_customers_txn(df):
     """

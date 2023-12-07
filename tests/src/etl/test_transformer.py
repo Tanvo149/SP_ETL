@@ -1,7 +1,5 @@
 import pytest
 import pandas as pd
-import sys
-import os
 from data.src.etl.transformer import convert_dates, currency_filter, remove_duplicate_txnID
 
 
