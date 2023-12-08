@@ -14,6 +14,7 @@ Follow the step process below to set up your python application
 - After you done with the project, you can run `make delete_tables` to drop all the tables from the database. ***Hooray!***
 
 **If you get `ModuleNotFoundError` run `pip install .`**
+**use the `requirements_v2.txt` to install the packages, however it should be included if you run `make setup`.
 
 ---
 ## Data Quality
@@ -21,7 +22,7 @@ Follow the step process below to set up your python application
 The data quality check examines original data for duplicate transactions, invalid currencies, or invalid transaction dates, raising an exception if at least 20% of the data exhibits any of these issues.
 
 ---
-### Postgres Tables 
+## Postgres Tables 
 
 #### Customer Table 
 This shows a list of unique customers with the most recent transactions. 
