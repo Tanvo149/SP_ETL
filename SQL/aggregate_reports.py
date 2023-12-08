@@ -36,10 +36,12 @@ try:
     write_to_csv(columns, "SQL/outputs/customer_yymm_amount.csv")
 
     agg_by_category = """
-                        SELECT category, currency, year, month, sum(amount)
+                        SELECT category, currency, year, month, 
+                        CASE WHEN amount >= 0 then amount ELSE 0 END as pos_amount,
+                        CASE WHEN amount <0 then amount ELSE 0 END as neg_amount,
+                        CASE WHEN amount >= 0 then 1 ELSE 0 END as pos_txn_count,
+                        CASE WHEN amount <0 then 1 ELSE 0 END as neg_txn_count
                         FROM transactions
-                        GROUP BY category, currency, year, month
-                        ORDER BY category, currency, year DESC, month DESC
                     """
 
     cur.execute(agg_by_category)

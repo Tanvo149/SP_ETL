@@ -4,8 +4,8 @@
             "customerId": "fbbe0690-0cd1-48eb-aece-f2744db6f895",
             "customerName": "Gregory Downs",
             "transactionId": "abc123",
-            "transactionDate": "2023-02-21",
-            "sourceDate": "2023-02-22T21:20:48",
+            "transactionDate": "2023-12-21",
+            "sourceDate": "2023-12-22T21:20:48",
             "merchantId": 36,
             "categoryId": 10,
             "currency": "GBP",
@@ -15,7 +15,7 @@
         {
             "customerId": "fbbe0690-0cd1-48eb-aece-f2744db6f895",
             "customerName": "Gregory Downs",
-            "transactionId": "abc124",
+            "transactionId": "abc123",
             "transactionDate": "2022-04-03",
             "sourceDate": "2022-04-03T19:00:23",
             "merchantId": 64,
@@ -32,7 +32,7 @@
             "sourceDate": "2023-11-13T04:00:20",
             "merchantId": 61,
             "categoryId": 4,
-            "currency": "GBP",
+            "currency": "BTC",
             "amount": "-123",
             "description": "Anderson, Thomas and Jimenez | Eating Out"
         },
@@ -87,14 +87,26 @@
         {
             "customerId": "fbbe0690-0cd1-48eb-aece-f2744db6f895",
             "customerName": "Gregory Downs",
-            "transactionId": "abc789",
-            "transactionDate": "2020-01-03",
-            "sourceDate": "2020-01-12T05:09:04",
+            "transactionId": "5a93c229-7c37-4821-982e-ef8867c2fa3a",
+            "transactionDate": "2023-11-15",
+            "sourceDate": "2023-11-17T05:09:04",
             "merchantId": 13,
             "categoryId": 9,
             "currency": "GBP",
             "amount": "1406.95",
-            "description": "Palmer-Ward | Health & Beauty"
+            "description": "Test | Health & Beauty"
+        },
+        {
+            "customerId": "new1",
+            "customerName": "jackie v",
+            "transactionId": "dfghjk",
+            "transactionDate": "2023-11-15",
+            "sourceDate": "2023-11-17T05:09:04",
+            "merchantId": 13,
+            "categoryId": 9,
+            "currency": "GBP",
+            "amount": "1406.95",
+            "description": "Test | Travel"
         }
 
     ]

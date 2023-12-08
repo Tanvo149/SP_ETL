@@ -3,3 +3,5 @@ Tan.egg-info
 .pytest_cache
 venv
 build
+requirements.txt
+.DS_Store

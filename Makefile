@@ -21,12 +21,7 @@ reports:
 # Set up to install requirements and create virtual enviornment 
 # .PHONY: setup
 
-# setup:
-#     @if [ ! -d "venv" ]; then \
-#         python3 -m venv venv; \
-#     fi
-#     venv/bin/pip install --upgrade pip
-
-# .PHONY requirements
-# requirements:
-#     venv/bin/pip install -r requirements.txt
+setup:
+		python3 -m venv venv
+		./venv/bin/pip install --upgrade pip && \
+		./venv/bin/pip install -r requirements_v2.txt

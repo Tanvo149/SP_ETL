@@ -26,7 +26,8 @@ try:
                             "categoryId" varchar(100), 
                             "currency" TEXT,
                             "amount" varchar(100),
-                            "reason" varchar(100)
+                            "reason" varchar(100),
+                            "last_updated" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                             )
                     """
 
@@ -44,6 +45,7 @@ try:
                             "amount" FLOAT,
                             "merchant" varchar(100),
                             "category" varchar(30),
+                            "last_user_updated" varchar(100),
                             "last_updated" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                             )
                         """
@@ -64,6 +66,8 @@ try:
                             "year" INT,
                             "month" INT,
                             "day" INT,
+                            "last_user_updated" varchar(100),
+                            "last_updated" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                             PRIMARY KEY ("customerId", "transactionId")
                             )
                         """

@@ -1,6 +1,13 @@
 from sqlalchemy import create_engine
 import psycopg2
 import configparser
+import getpass
+
+
+if getpass.getuser() is not None:
+    username = getpass.getuser()
+else:
+    username = "Unknown"
 
 config = configparser.ConfigParser()
 config.read("config.ini")
@@ -66,8 +73,6 @@ def upsert_df_to_postgres(df, table_name):
                 customer_exists = cur.fetchone()
 
                 if customer_exists:
-                    print("transaction_id")
-
                     update_query = """
                             UPDATE customers 
                             SET "transactionId" = %s,
@@ -78,7 +83,8 @@ def upsert_df_to_postgres(df, table_name):
                                 "currency" = %s,
                                 "amount" = %s,
                                 "merchant" = %s, 
-                                "category" = %s
+                                "category" = %s,
+                                "last_user_updated" = %s
                             WHERE "customerId" = %s
                         """
                     try:
@@ -94,6 +100,7 @@ def upsert_df_to_postgres(df, table_name):
                                 amount,
                                 merchant,
                                 category,
+                                username,
                                 customer_id,
                             ),
                         )
@@ -114,8 +121,9 @@ def upsert_df_to_postgres(df, table_name):
                                                     "transactionDate", "sourceDate",
                                                     "merchantId", "categoryId",
                                                     "currency", "amount",
-                                                    "merchant", "category")
-                            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                                                    "merchant", "category",
+                                                    "last_user_updated")
+                            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                         """
                     try:
                         cur.execute(
@@ -131,6 +139,7 @@ def upsert_df_to_postgres(df, table_name):
                                 amount,
                                 merchant,
                                 category,
+                                username,
                             ),
                         )
                         insert_count += 1
@@ -194,6 +203,7 @@ def upsert_df_to_postgres(df, table_name):
                                 "year" = %s,
                                 "month" = %s,
                                 "day" = %s, 
+                                "last_user_updated" = %s
                             WHERE "customerId" = %s
                                 AND "transactionId" = %s
                         """
@@ -212,6 +222,7 @@ def upsert_df_to_postgres(df, table_name):
                                 year,
                                 month,
                                 day,
+                                username,
                                 customer_id,
                                 transaction_id,
                             ),
@@ -228,10 +239,15 @@ def upsert_df_to_postgres(df, table_name):
                                                     "merchantId", "categoryId",
                                                     "currency", "amount",
                                                     "merchant", "category",
-                                                    "year", "month", "day")
-                            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                                                    "year", "month", "day",
+                                                    "last_user_updated")
+                            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                         """
                     try:
+                        """
+                        Insert record only if txn doesn't exist,
+                        otherwise it won't insert
+                        """
                         cur.execute(
                             insert_query,
                             (
@@ -248,6 +264,7 @@ def upsert_df_to_postgres(df, table_name):
                                 year,
                                 month,
                                 day,
+                                username,
                             ),
                         )
                         insert_count += 1
