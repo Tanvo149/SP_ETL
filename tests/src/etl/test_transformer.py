@@ -112,8 +112,8 @@ def test_split_description(sample_data):
     result_df = split_description(sample_data)
 
     expected_data = {
-        "merchant": ["RyanAir ", "RyanAir ", "RyanAir ", "RyanAir "],
-        "category": [" Travel", " Travel", " Travel", " Travel"],
+        "merchant": ["RyanAir", "RyanAir", "RyanAir", "RyanAir"],
+        "category": ["Travel", "Travel", "Travel", "Travel"],
     }
     expected_df = pd.DataFrame(expected_data)
     print(result_df["category"])

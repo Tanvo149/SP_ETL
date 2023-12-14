@@ -1,7 +1,5 @@
 import pandas as pd
 
-pd.options.mode.copy_on_write = True
-
 
 def convert_dates(df):
     """
@@ -12,10 +10,10 @@ def convert_dates(df):
     # set invalid date to NaT
     df["txn_date_1"] = pd.to_datetime(df["transactionDate"], errors="coerce")
     # seperate DF for invalid date to be process for error log
-    invalid_date_df = df[df["txn_date_1"].isna()]
+    invalid_date_df = df[df["txn_date_1"].isna()].copy()
 
     if len(invalid_date_df) > 0:
-        invalid_date_df["reason"] = "invalid transaction date format"
+        invalid_date_df.loc[:, "reason"] = "invalid transaction date format"
         invalid_date_df = invalid_date_df.drop(["customerName", "description", "txn_date_1"], axis=1)
 
     # Exclude rows with invalid date from the main dataframe
@@ -38,10 +36,10 @@ def currency_filter(df):
     valid_list = ["EUR", "GBP", "USD"]
 
     # filter data for non-valid currencies to be process to error log
-    non_valid_list_df = df[~df["currency"].isin(valid_list)]
+    non_valid_list_df = df[~df["currency"].isin(valid_list)].copy()
 
     if len(non_valid_list_df) > 0:
-        non_valid_list_df["reason"] = "invalid currency"
+        non_valid_list_df.loc[:, "reason"] = "invalid currency"
         non_valid_list_df = non_valid_list_df.drop(["customerName", "description"], axis=1)
 
     return df[df["currency"].isin(valid_list)], non_valid_list_df
@@ -54,12 +52,13 @@ def remove_duplicate_txnID(df):
 
     df = df.sort_values(by=["transactionId", "sourceDate"], ascending=[True, False])
 
-    # Idenitfy duplicate reocrds including the latest transaction
-    # Push to error log if any duplicate reocrds
+    # Idenitfy duplicate records and take the latest sourceDate
     duplicate_df = df.duplicated(subset="transactionId", keep="first")
+
+    # Push to error log if any duplicate reocrds
     if len(duplicate_df) > 0:
-        duplicate_df = df[duplicate_df]
-        duplicate_df["reason"] = "duplicate transactionId records"
+        duplicate_df = df[duplicate_df].copy()
+        duplicate_df.loc[:, "reason"] = "duplicate transactionId records"
         duplicate_df = duplicate_df.drop(["customerName", "description"], axis=1)
 
     # Remove duplicate txnIds and keep the first record
@@ -96,10 +95,12 @@ def split_description(df):
     """
 
     df["description_boolean"] = df["description"].str.contains("|", regex=False)
-    split_columns = df["description"].str.split(r"\|", n=1, expand=True)
+    split_columns = df["description"].str.split(r"\|", n=1, expand=True, regex=True)
     split_columns = split_columns.rename(columns={0: "merchant", 1: "category"})
 
     df = pd.concat([df, split_columns], axis=1)
+    df["merchant"] = df["merchant"].str.strip()
+    df["category"] = df["category"].str.strip()
 
     df.loc[~df["description_boolean"], "merchant"] = "Custom Merchant"
     df.loc[~df["description_boolean"], "category"] = "Custom Category"
@@ -136,5 +137,5 @@ def latest_customers_txn(df):
 
 
 def data_quality_check(data_error_df, original_df, error_type, threshold):
-    if len(data_error_df) / len(original_df) > threshold:
+    if len(data_error_df) / (len(original_df) + len(data_error_df)) > threshold:
         raise Exception("Data Quality check failed breach {}% threshold: {}".format(threshold, error_type))
