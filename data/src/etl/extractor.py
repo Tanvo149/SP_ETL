@@ -9,6 +9,5 @@ def read_json_to_df(file_path):
         df = pd.DataFrame(json_data["transactions"])
 
         print("Number of records: ", len(df))
-        df.to_csv("json_output.csv", index=False)
 
         return df
